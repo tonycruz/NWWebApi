@@ -1,0 +1,52 @@
+[
+  {
+    "id": 0,
+    "accordionName": "accCategoryList",
+    "title": "HTML View",
+    "hrefName": "9b6b5efa-6e46-412b-9a3a-d747db06fb0d",
+    "href": "#9b6b5efa-6e46-412b-9a3a-d747db06fb0d",
+    "fileLocation": "Folder Categories\\CategoryCreate.html",
+    "fileContent": "   &lt;template&gt;\r\n    &lt;section&gt;\r\n        &lt;div&gt;\r\n            &lt;br /&gt;\r\n            &lt;div class=&quot;panel panel-default&quot;&gt;\r\n                &lt;div class=&quot;panel-heading&quot;&gt;\r\n                    &lt;div class=&quot;panel-title&quot;&gt;\r\n                        &lt;h3&gt; Add Category ${category.categoryName}&lt;/h3&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=&quot;panel-body&quot;&gt;\r\n                    &lt;form class=&quot;form-horizontal&quot; validate.bind=&quot;category.validation&quot; submit.trigger=&quot;save()&quot; role=&quot;form&quot;&gt;\r\n                        &lt;div&gt;\r\n                            &lt;div class=&quot;form-group&quot;&gt;\r\n                                &lt;label for=&quot;CategoryName&quot; class=&quot;control-label col-md-3&quot;&gt;Category Name&lt;/label&gt;\r\n                                &lt;div class=&quot;col-md-6&quot;&gt;\r\n                                    &lt;input type=&quot;text&quot; value.bind=&quot;category.categoryName&quot; id=&quot;CategoryName&quot; validate=&quot;categoryName&quot; class=&quot;form-control&quot; title=&quot;CategoryName&quot; placeholder=&quot;CategoryName&quot; /&gt;\r\n                                &lt;/div&gt;\r\n                            &lt;/div&gt;\r\n                            &lt;div class=&quot;form-group&quot;&gt;\r\n                                &lt;label for=&quot;Description&quot; class=&quot;control-label col-md-3&quot;&gt;Description&lt;/label&gt;\r\n                                &lt;div class=&quot;col-md-6&quot;&gt;\r\n                                    &lt;input type=&quot;text&quot; value.bind=&quot;category.description&quot; id=&quot;Description&quot; name=&quot;Description&quot; validate=&quot;description&quot; class=&quot;form-control&quot; title=&quot;Description&quot; placeholder=&quot;Description&quot; /&gt;\r\n                                &lt;/div&gt;\r\n                            &lt;/div&gt;\r\n                        &lt;/div&gt;\r\n                        &lt;div class=&quot;form-group&quot;&gt;\r\n                            &lt;div class=&quot;col-md-6 col-md-offset-2&quot;&gt;\r\n                                &lt;a route-href=&quot;route:categories;&quot; class=&quot;btn btn-default&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-hand-left&quot;&gt; &lt;/span&gt;  Go back&lt;/a&gt;\r\n                                &lt;input type=&quot;submit&quot; disabled.bind=&quot;!category.validation.result.isValid&quot; value=&quot;Save&quot; class=&quot;btn btn-primary&quot;&gt;\r\n                            &lt;/div&gt;\r\n                        &lt;/div&gt;\r\n                    &lt;/form&gt;\r\n\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n        \r\n\r\n    &lt;/section&gt;\r\n\r\n&lt;/template&gt;",
+    "group": "language-markup"
+  },
+  {
+    "id": 1,
+    "accordionName": "accordionListCategoriesVM",
+    "title": "View Model",
+    "hrefName": "914f6833-9f4a-4ce6-bb33-c14c1d154f7c",
+    "href": "#914f6833-9f4a-4ce6-bb33-c14c1d154f7c",
+    "fileLocation": "Folder Categories\\categoryCreate.js",
+    "fileContent": "import {inject} from &quot;aurelia-framework&quot;;\r\nimport {CategoriesDataContext} from &quot;./categoriesDataContext&quot;;\r\nimport {Router} from &quot;aurelia-router&quot;;\r\nimport {Validation} from &#39;aurelia-validation&#39;;\r\nimport {CategoryInfo} from &#39;./categoryInfo&#39;;\r\n\r\n@inject(Router, CategoriesDataContext, Validation)\r\nexport class CategoryCreate {\r\n\r\n    constructor(router, datacontect, validation) {\r\n        this.validation = validation;\r\n        this.router = router;\r\n        this.datacontect = datacontect;\r\n    }\r\n    activate() {\r\n       this.category = new CategoryInfo();\r\n        CategoryInfo.Validate(this.category, this.validation);\r\n    }\r\n    save() {\r\n        this.category.validation.validate().then(() =&gt; {\r\n             this.datacontect.save(CategoryInfo.toJson(this.category))\r\n               .then(category =&gt; {\r\n                   let url = this.router.generate(&quot;categorydetails&quot;, { id: category.categoryID });\r\n                  this.router.navigate(url);\r\n              });\r\n\r\n        });\r\n      \r\n    }\r\n}",
+    "group": "language-javascript"
+  },
+  {
+    "id": 2,
+    "accordionName": "accordionListCategoriesDataContext",
+    "title": "categories Data Context",
+    "hrefName": "eb39297c-3b01-4675-9814-28522108a029",
+    "href": "#eb39297c-3b01-4675-9814-28522108a029",
+    "fileLocation": "Folder Categories",
+    "fileContent": "import {inject} from &quot;aurelia-framework&quot;;\r\nimport {ContextBaseFetch} from &quot;../modules/contextBaseFetch&quot;;\r\nimport {AppConstants} from &quot;../modules/appConstants&quot;;\r\n@inject(ContextBaseFetch)\r\nexport class CategoriesDataContext {\r\n      url = AppConstants.urlBase +&quot;CategoriesApi&quot;; \r\n\r\n    constructor(context) {\r\n        this.context = context;\r\n        this.context.apiName = this.url;\r\n    }\r\n    getAll() {\r\n        this.context.apiName = this.url;\r\n         return this.context.getAll()\r\n            .then(result =&gt; { return result });\r\n    }\r\n    getById(id) {\r\n        this.context.apiName = this.url;\r\n        return this.context.getById(id)\r\n          \r\n    }\r\n    deleteRecord(id) {\r\n        this.context.apiName = this.url;\r\n        return this.context.deleteByID(id);\r\n            \r\n    }\r\n    update(category) {\r\n        this.context.apiName = this.url;\r\n         return this.context.update(category, category.categoryID);\r\n    }\r\n    save(category) {\r\n       this.context.apiName = this.url;\r\n       return this.context.save(category);\r\n    }\r\n}",
+    "group": "language-javascript"
+  },
+  {
+    "id": 3,
+    "accordionName": "accordionContextBaseFetch",
+    "title": "Context Base Fetch",
+    "hrefName": "d31ca569-e5d8-46ff-9ec1-be484fd1b051",
+    "href": "#d31ca569-e5d8-46ff-9ec1-be484fd1b051",
+    "fileLocation": "Folder modules",
+    "fileContent": "import {inject} from &quot;aurelia-framework&quot;;\r\nimport {HttpClient, json} from &#39;aurelia-fetch-client&#39;;\r\nimport &#39;fetch&#39;;\r\n\r\n@inject(HttpClient)\r\nexport class ContextBaseFetch {\r\n    apiName;\r\n    constructor(http) {\r\n        http.configure(config =&gt; {\r\n            config\r\n                .useStandardConfiguration()\r\n                .withBaseUrl(this.apiName);\r\n        });\r\n\r\n        this.http = http;\r\n    }\r\n    \r\n    getAll() {\r\n        return this.http.fetch(this.apiName)\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; {return result});\r\n    }\r\n    getById(id) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot; + id)\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });\r\n    }\r\n    deleteByID(id) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot; + id,\r\n            {\r\n                headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n                method: &quot;DELETE&quot;\r\n            })\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });      \r\n    }\r\n     deleteData(id, prodid) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot;+ id +&quot;?prodid=&quot; + prodid,\r\n            {\r\n                headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n                method: &quot;DELETE&quot;\r\n            })\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });      \r\n    }\r\n    update(data,id) {\r\n       return this.http.fetch(this.apiName + &quot;/&quot; + id, {\r\n            headers: {&quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n            method: &quot;PUT&quot;,\r\n            body: json(data)\r\n            }).then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });\r\n    }\r\n    save(data) {\r\n       return this.http.fetch(this.apiName + &quot;/&quot; , {\r\n            headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot; },\r\n            method: &quot;POST&quot;,\r\n            body: json(data)\r\n        }).then(response =&gt; response.json())\r\n         .then(result =&gt; { return result });\r\n   }\r\n\r\n}",
+    "group": "language-javascript"
+  },
+  {
+    "id": 4,
+    "accordionName": "accordionCategoryInfoVM",
+    "title": "Model Info",
+    "hrefName": "d62ebcd8-3668-450d-9343-b8500d16aef5",
+    "href": "#d62ebcd8-3668-450d-9343-b8500d16aef5",
+    "fileLocation": "Categories",
+    "fileContent": "export class CategoryInfo {\r\n  constructor(){\r\n      this.categoryID =&quot;0&quot;;\r\n      this.categoryName = &quot;&quot;;\r\n      this.description =&quot;&quot;;\r\n      this.validation;  \r\n    }\r\n    static toJson(cat) {\r\n        return {\r\n            &quot;categoryID&quot;: cat.categoryID,\r\n            &quot;categoryName&quot;: cat.categoryName,\r\n            &quot;description&quot;: cat.description,\r\n            }\r\n    }\r\n    static Validate(cat, validation) {\r\n        cat.validation = validation.on(cat)\r\n            .ensure(&quot;categoryName&quot;)\r\n               .isNotEmpty()\r\n               .hasLengthBetween(5, 15)\r\n            .ensure(&quot;description&quot;)\r\n               .isNotEmpty()\r\n               .hasLengthBetween(10, 50);\r\n    }\r\n}",
+    "group": "language-javascript"
+  }
+]

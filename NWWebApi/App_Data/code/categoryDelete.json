@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "accordionName": "accCategoryList",
+    "title": "HTML View",
+    "hrefName": "eedb112b-8332-406e-9c98-9df5de727de3",
+    "href": "#eedb112b-8332-406e-9c98-9df5de727de3",
+    "fileLocation": "Folder Categories\\categoryDelete.html",
+    "fileContent": "   &lt;template&gt;\r\n    &lt;section&gt;\r\n        &lt;div class=&quot;panel-body&quot;&gt;\r\n            &lt;h2&gt; ${title}&lt;/h2&gt;\r\n            &lt;div class=&quot;panel panel-danger&quot;&gt;\r\n                &lt;div class=&quot;container&quot;&gt;\r\n                    &lt;h3&gt;${category.categoryName}&lt;/h3&gt;\r\n                    &lt;hr /&gt;\r\n                    &lt;h3&gt;\r\n                        ${category.description}\r\n                    &lt;/h3&gt;\r\n                    &lt;hr /&gt;\r\n                    &lt;a route-href=&quot;route:categories&quot; class=&quot;btn btn-default&quot;&gt;Back to List&lt;/a&gt;\r\n                    &lt;input type=&quot;button&quot; style=&quot;margin-left:25px&quot; value=&quot;Delete&quot; click.trigger=&quot;delteCategory()&quot; class=&quot;btn btn-danger&quot;&gt;\r\n                    &lt;br /&gt;\r\n                    &lt;br /&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/section&gt;\r\n&lt;/template&gt;",
+    "group": "language-markup"
+  },
+  {
+    "id": 1,
+    "accordionName": "accordionListCategoriesVM",
+    "title": "View Model",
+    "hrefName": "bc3bee7b-5c81-47e3-971d-f3dca3f5f6ad",
+    "href": "#bc3bee7b-5c81-47e3-971d-f3dca3f5f6ad",
+    "fileLocation": "Folder Categories\\categoryDelete.js",
+    "fileContent": "import {inject} from &#39;aurelia-framework&#39;;\r\nimport {CategoriesDataContext} from &quot;./categoriesDataContext&quot;;\r\nimport {Router} from &quot;aurelia-router&quot;;\r\n\r\n@inject(CategoriesDataContext, Router)\r\nexport class CategoryDelete {\r\n    id;\r\n    category;\r\n   datacontext;\r\n    constructor(datacontext , router) {\r\n        this.datacontext = datacontext;\r\n        this.router = router;\r\n    }\r\n    activate(params) {\r\n     \r\n        this.id = params.id;\r\n        return this.datacontext.getById(params.id)\r\n            .then(category =&gt; { this.category = category });\r\n\r\n    }\r\n    goToMainPage() {\r\n       return this.router.navigateToRoute(&quot;categories&quot;);\r\n    }\r\n    delteCategory() {\r\n        var deleteItem;\r\n        return this.datacontext.deleteRecord(this.category.categoryID)\r\n            .then(deleteItem =&gt; {\r\n                deleteItem = deleteItem;\r\n                this.goToMainPage();\r\n            });\r\n    }\r\n}",
+    "group": "language-javascript"
+  },
+  {
+    "id": 2,
+    "accordionName": "accordionListCategoriesDataContext",
+    "title": "categories Data Context",
+    "hrefName": "8b3d5730-6381-44ac-8291-c1fcf7a85288",
+    "href": "#8b3d5730-6381-44ac-8291-c1fcf7a85288",
+    "fileLocation": "Folder Categories",
+    "fileContent": "import {inject} from &quot;aurelia-framework&quot;;\r\nimport {ContextBaseFetch} from &quot;../modules/contextBaseFetch&quot;;\r\nimport {AppConstants} from &quot;../modules/appConstants&quot;;\r\n@inject(ContextBaseFetch)\r\nexport class CategoriesDataContext {\r\n      url = AppConstants.urlBase +&quot;CategoriesApi&quot;; \r\n\r\n    constructor(context) {\r\n        this.context = context;\r\n        this.context.apiName = this.url;\r\n    }\r\n    getAll() {\r\n        this.context.apiName = this.url;\r\n         return this.context.getAll()\r\n            .then(result =&gt; { return result });\r\n    }\r\n    getById(id) {\r\n        this.context.apiName = this.url;\r\n        return this.context.getById(id)\r\n          \r\n    }\r\n    deleteRecord(id) {\r\n        this.context.apiName = this.url;\r\n        return this.context.deleteByID(id);\r\n            \r\n    }\r\n    update(category) {\r\n        this.context.apiName = this.url;\r\n         return this.context.update(category, category.categoryID);\r\n    }\r\n    save(category) {\r\n       this.context.apiName = this.url;\r\n       return this.context.save(category);\r\n    }\r\n}",
+    "group": "language-javascript"
+  },
+  {
+    "id": 3,
+    "accordionName": "accordionContextBaseFetch",
+    "title": "Context Base Fetch",
+    "hrefName": "e01531a9-9a04-4a5f-bd4a-419910cda6bf",
+    "href": "#e01531a9-9a04-4a5f-bd4a-419910cda6bf",
+    "fileLocation": "Folder modules",
+    "fileContent": "import {inject} from &quot;aurelia-framework&quot;;\r\nimport {HttpClient, json} from &#39;aurelia-fetch-client&#39;;\r\nimport &#39;fetch&#39;;\r\n\r\n@inject(HttpClient)\r\nexport class ContextBaseFetch {\r\n    apiName;\r\n    constructor(http) {\r\n        http.configure(config =&gt; {\r\n            config\r\n                .useStandardConfiguration()\r\n                .withBaseUrl(this.apiName);\r\n        });\r\n\r\n        this.http = http;\r\n    }\r\n    \r\n    getAll() {\r\n        return this.http.fetch(this.apiName)\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; {return result});\r\n    }\r\n    getById(id) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot; + id)\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });\r\n    }\r\n    deleteByID(id) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot; + id,\r\n            {\r\n                headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n                method: &quot;DELETE&quot;\r\n            })\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });      \r\n    }\r\n     deleteData(id, prodid) {\r\n        return this.http.fetch(this.apiName + &quot;/&quot;+ id +&quot;?prodid=&quot; + prodid,\r\n            {\r\n                headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n                method: &quot;DELETE&quot;\r\n            })\r\n            .then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });      \r\n    }\r\n    update(data,id) {\r\n       return this.http.fetch(this.apiName + &quot;/&quot; + id, {\r\n            headers: {&quot;content-type&quot;: &quot;application/json; charset=utf-8&quot;},\r\n            method: &quot;PUT&quot;,\r\n            body: json(data)\r\n            }).then(response =&gt; response.json())\r\n            .then(result =&gt; { return result });\r\n    }\r\n    save(data) {\r\n       return this.http.fetch(this.apiName + &quot;/&quot; , {\r\n            headers: { &quot;content-type&quot;: &quot;application/json; charset=utf-8&quot; },\r\n            method: &quot;POST&quot;,\r\n            body: json(data)\r\n        }).then(response =&gt; response.json())\r\n         .then(result =&gt; { return result });\r\n   }\r\n\r\n}",
+    "group": "language-javascript"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "shipperID": 1,
+    "companyName": "Speedy Express",
+    "phone": "(503) 555-9831"
+  },
+  {
+    "shipperID": 2,
+    "companyName": "United Package",
+    "phone": "(503) 555-3199"
+  },
+  {
+    "shipperID": 3,
+    "companyName": "Federal Shipping",
+    "phone": "(503) 555-9931"
+  },
+  {
+    "shipperID": 4,
+    "companyName": "UPS",
+    "phone": "123456789"
+  },
+  {
+    "shipperID": 5,
+    "companyName": "Royal Mail",
+    "phone": "0208123456"
+  },
+  {
+    "shipperID": 6,
+    "companyName": "parcelforce",
+    "phone": "01234567890"
+  },
+  {
+    "shipperID": 7,
+    "companyName": "UK Mail",
+    "phone": "01234567891"
+  }
+]
