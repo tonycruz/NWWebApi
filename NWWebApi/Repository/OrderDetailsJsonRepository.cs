@@ -16,13 +16,15 @@ namespace NWWebApi.Repository
         }
         public void Add(order_DetailVm Item)
         {
-           db.orderDetails.Add(Item);
+            var newID = db.orderDetails.Max(o => o.orderDetailID) + 1;
+            Item.orderDetailID = newID;
+            db.orderDetails.Add(Item);
         }
 
         public order_DetailManagerVm GetOrderDetails(int id)
         {
             order_DetailManagerVm Vm = new order_DetailManagerVm();
-            Vm.orderDetails = db.orderDetails.Where(_Ord => _Ord.orderID == id).ToList();
+            Vm.orderDetails = db.orderDetails.Where(_Ord => _Ord.orderDetailID == id).ToList();
 
             if ((Vm == null))
             {
@@ -34,12 +36,12 @@ namespace NWWebApi.Repository
 
         public void RemoveItem(order_DetailVm Item)
         {
-            var remove = db.orderDetails.Where(OD => OD.orderID == Item.orderID && OD.productName == Item.productName).SingleOrDefault();
+            var remove = db.orderDetails.Where(OD => OD.orderDetailID == Item.orderDetailID).SingleOrDefault();
             db.orderDetails.Remove(remove);
         }
-       public order_DetailVm DeleteOrderDetailById(int id, int prodid)
+       public order_DetailVm DeleteOrderDetailById(int id)
         {
-            var remove = db.orderDetails.Where(OD => OD.orderID == id && OD.productID == prodid).SingleOrDefault();
+            var remove = db.orderDetails.Where(OD => OD.orderDetailID == id).SingleOrDefault();
             db.orderDetails.Remove(remove);
             return remove;
         }
@@ -51,7 +53,7 @@ namespace NWWebApi.Repository
 
         public void Update(order_DetailVm Item)
         {
-            var UpdateRecord = db.orderDetails.Where(OD => OD.orderID == Item.orderID && OD.productName == Item.productName).SingleOrDefault();
+            var UpdateRecord = db.orderDetails.Where(OD => OD.orderDetailID == Item.orderID).SingleOrDefault();
             UpdateRecord.unitPrice = Item.unitPrice;
             UpdateRecord.quantity = Item.quantity;
             UpdateRecord.discount = Item.discount;
@@ -82,7 +84,7 @@ namespace NWWebApi.Repository
 
         public order_DetailVm GetOrderDetailById(order_DetailVm od)
         {
-            var result = db.orderDetails.Where(OD => OD.orderID == od.orderID && OD.productName == od.productName).SingleOrDefault();
+            var result = db.orderDetails.Where(OD => OD.orderDetailID == od.orderDetailID).SingleOrDefault();
             return result;
         }
     }

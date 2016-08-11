@@ -61,9 +61,9 @@ namespace NWWebApi.Controllers
         #region "Delete"
         //  DELETE api/Orders/5
         [ResponseType(typeof(order_DetailVm))]
-        public IHttpActionResult DeleteOrder(int id,int prodid)
+        public IHttpActionResult DeleteOrder(int id)
         {
-            var od = Repo.DeleteOrderDetailById(id, prodid);
+            var od = Repo.DeleteOrderDetailById(id);
             if (od == null)
             {
                 return NotFound();

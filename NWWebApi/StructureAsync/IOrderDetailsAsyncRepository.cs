@@ -6,6 +6,6 @@ namespace NWWebApi.StructureAsync
     {
         Task<order_DetailManagerVm> GetOrderDetails(int id);
         Task<order_DetailVm> GetOrderDetailById(order_DetailVm od);
-        Task<order_DetailVm> DeleteOrderDetailById(int id, int prodid);
+        Task<order_DetailVm> DeleteOrderDetailById(int id);
     }
 }

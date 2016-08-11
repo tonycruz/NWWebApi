@@ -2,6 +2,7 @@
 {
     public class order_DetailVm
     {
+        public int orderDetailID { get; set; }
         public int? orderID { get; set; }
         public int? productID { get; set; }
         public string productName { get; set; }

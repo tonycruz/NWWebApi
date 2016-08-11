@@ -6,6 +6,6 @@ namespace NWWebApi.Infrastructure
     {
         order_DetailManagerVm GetOrderDetails(int id);
         order_DetailVm GetOrderDetailById(order_DetailVm od);
-        order_DetailVm DeleteOrderDetailById(int id, int prodid);
+        order_DetailVm DeleteOrderDetailById(int id);
     }
 }

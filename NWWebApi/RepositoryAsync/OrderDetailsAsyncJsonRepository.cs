@@ -16,7 +16,9 @@ namespace NWWebApi.RepositoryAsync
         }
         public Task Add(order_DetailVm Item)
         {
-           db.orderDetails.Add(Item);
+            var newID = db.orderDetails.Max(o => o.orderDetailID) + 1;
+            Item.orderDetailID = newID;
+            db.orderDetails.Add(Item);
             return Task.FromResult<order_DetailVm>(null);
         }
 
@@ -35,13 +37,13 @@ namespace NWWebApi.RepositoryAsync
 
         public Task RemoveItem(order_DetailVm Item)
         {
-            var remove = db.orderDetails.Where(OD => OD.orderID == Item.orderID && OD.productName == Item.productName).SingleOrDefault();
+            var remove = db.orderDetails.Where(OD => OD.orderDetailID == Item.orderDetailID).SingleOrDefault();
             db.orderDetails.Remove(remove);
             return Task.FromResult<order_DetailManagerVm>(null);
         }
-       public Task<order_DetailVm> DeleteOrderDetailById(int id, int prodid)
+       public Task<order_DetailVm> DeleteOrderDetailById(int id)
         {
-            var remove = db.orderDetails.Where(OD => OD.orderID == id && OD.productID == prodid).SingleOrDefault();
+            var remove = db.orderDetails.Where(OD => OD.orderDetailID== id).SingleOrDefault();
             db.orderDetails.Remove(remove);
             return Task.FromResult(remove); ;
         }
@@ -54,7 +56,7 @@ namespace NWWebApi.RepositoryAsync
 
         public Task Update(order_DetailVm Item)
         {
-            var UpdateRecord = db.orderDetails.Where(OD => OD.orderID == Item.orderID && OD.productName == Item.productName).SingleOrDefault();
+            var UpdateRecord = db.orderDetails.Where(OD => OD.orderID == Item.orderDetailID).SingleOrDefault();
             UpdateRecord.unitPrice = Item.unitPrice;
             UpdateRecord.quantity = Item.quantity;
             UpdateRecord.discount = Item.discount;
@@ -76,7 +78,7 @@ namespace NWWebApi.RepositoryAsync
         public Task<order_DetailVm> GetOrderDetailById(order_DetailVm od)
         {
            var results = HelperCode.GetJson<order_DetailVm>("orderDetails.json")
-                .Where(OD => OD.orderID == od.orderID && OD.productName == od.productName).SingleOrDefault();
+                .Where(OD => OD.orderDetailID == od.orderDetailID && OD.productName == od.productName).SingleOrDefault();
             return Task.FromResult(results);
         }
     }

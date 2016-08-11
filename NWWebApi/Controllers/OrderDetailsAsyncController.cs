@@ -61,9 +61,9 @@ namespace NWWebApi.Controllers
         #region "Delete"
         //  DELETE api/Orders/5
         [ResponseType(typeof(order_DetailVm))]
-        public async Task<IHttpActionResult> DeleteOrder(int id,int prodid)
+        public async Task<IHttpActionResult> DeleteOrder(int id)
         {
-            var od = Repo.DeleteOrderDetailById(id, prodid).Result;
+            var od = Repo.DeleteOrderDetailById(id).Result;
             if (od == null)
             {
                 return NotFound();
